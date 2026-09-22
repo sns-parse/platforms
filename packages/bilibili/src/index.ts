@@ -2,6 +2,7 @@ import type { PlatformDefinition } from '@sns-parse/core'
 
 export const bilibili: PlatformDefinition = {
   type: "bilibili",
+  label: "哔哩哔哩",
   rules: [
     new RegExp("https?:\\/\\/(?:www\\.)?bilibili\\.com\\/video\\/([ab]v[0-9a-zA-Z_-]+)(?:\\?[^\\s'\"“”‘’]*)?", "gi"),
     new RegExp("https?:\\/\\/b23\\.tv\\/[0-9a-zA-Z_\\/-]+", "gi"),

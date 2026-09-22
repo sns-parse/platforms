@@ -2,6 +2,7 @@ import type { PlatformDefinition } from '@sns-parse/core'
 
 export const kuaishou: PlatformDefinition = {
   type: "kuaishou",
+  label: "快手",
   rules: [
     new RegExp("https?:\\/\\/(?:www\\.)?kuaishou\\.com\\/short-video\\/[0-9a-zA-Z_\\/-]+", "gi"),
     new RegExp("https?:\\/\\/v\\.kuaishou\\.com\\/[0-9a-zA-Z_\\/-]+", "gi"),

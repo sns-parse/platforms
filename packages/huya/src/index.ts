@@ -2,6 +2,7 @@ import type { PlatformDefinition } from '@sns-parse/core'
 
 export const huya: PlatformDefinition = {
   type: "huya",
+  label: "虎牙",
   rules: [
     new RegExp("https?:\\/\\/(?:www\\.)?huya\\.com\\/video\\/[0-9a-zA-Z_\\/-]+", "gi"),
   ],

@@ -2,6 +2,7 @@ import type { PlatformDefinition } from '@sns-parse/core'
 
 export const weibo: PlatformDefinition = {
   type: "weibo",
+  label: "微博",
   rules: [
     new RegExp("https?:\\/\\/weibo\\.com\\/\\d+\\/[0-9a-zA-Z_\\/-]+", "gi"),
     new RegExp("https?:\\/\\/video\\.weibo\\.com\\/show\\?fid=[0-9a-zA-Z_\\/-]+", "gi"),

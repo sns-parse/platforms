@@ -2,6 +2,7 @@ import type { PlatformDefinition } from '@sns-parse/core'
 
 export const douyin: PlatformDefinition = {
   type: "douyin",
+  label: "抖音",
   rules: [
     new RegExp("https?:\\/\\/(?:www\\.)?douyin\\.com\\/video\\/\\d{10,}", "gi"),
     new RegExp("https?:\\/\\/v\\.douyin\\.com\\/[0-9a-zA-Z_\\/-]+", "gi"),

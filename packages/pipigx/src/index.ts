@@ -2,6 +2,7 @@ import type { PlatformDefinition } from '@sns-parse/core'
 
 export const pipigx: PlatformDefinition = {
   type: "pipigx",
+  label: "皮皮搞笑",
   rules: [
     new RegExp("https?:\\/\\/h5\\.pipigx\\.com\\/pp\\/post\\/\\d+", "gi"),
     new RegExp("https?:\\/\\/(?:www\\.)?ippzone\\.com\\/[0-9a-zA-Z_\\/-]+", "gi"),

@@ -2,6 +2,7 @@ import type { PlatformDefinition } from '@sns-parse/core'
 
 export const jimeng: PlatformDefinition = {
   type: "jimeng",
+  label: "即梦",
   rules: [
     new RegExp("https?:\\/\\/(?:www\\.)?jimeng\\.jianying\\.com\\/[^\\s'\"“”‘’]*", "gi"),
     new RegExp("https?:\\/\\/(?:www\\.)?jimeng\\.cn\\/[^\\s'\"“”‘’]*", "gi"),
