@@ -1,0 +1,21 @@
+npm warn publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
+npm warn publish errors corrected:
+npm warn publish "version" was cleaned and set to "0.2.0-alpha.2"
+npm notice
+npm notice package: @sns-parse/platforms@0.2.0-alpha.2
+npm notice Tarball Contents
+npm notice 298B lib/index.d.ts
+npm notice 77B lib/index.js
+npm notice 2.3kB package.json
+npm notice Tarball Details
+npm notice name: @sns-parse/platforms
+npm notice version: 0.2.0-alpha.2
+npm notice filename: sns-parse-platforms-0.2.0-alpha.2.tgz
+npm notice package size: 1.1 kB
+npm notice unpacked size: 2.7 kB
+npm notice shasum: a9b310902e357cf1f4695337ca23caa5ffe0c1d9
+npm notice integrity: sha512-yktLkRO8Q5pCL[...]ynkwBvk1OyrCg==
+npm notice total files: 3
+npm notice
+npm notice Publishing to https://registry.npmjs.org with tag alpha and public access
+npm notice Your package is being processed and may take a few minutes to become available.

@@ -1,0 +1,9 @@
+
+> @sns-parse/platforms@0.2.0-alpha.2 prepublishOnly
+> npm run build
+
+
+> @sns-parse/platforms@0.2.0-alpha.2+upstream.1.6.7 build
+> tsc
+
++ @sns-parse/platforms@0.2.0-alpha.2

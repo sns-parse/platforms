@@ -365,85 +365,85 @@ importers:
         specifier: ^0.3.0-alpha.1
         version: 0.3.0-alpha.1
       '@sns-parse/platform-acfun':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-bilibili':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-doubao':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-doubao_image':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-douyin':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-haokan':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-huya':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-instagram':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-jimeng':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-kuaishou':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-lishi':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-meipai':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-oasis':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-pipigx':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-pipixia':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-quanmin':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-tiktok':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-toutiao':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-twitter':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-wechat_channel':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-weibo':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-weishi':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-xiaohongshu':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-xigua':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-youtube':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-zhihu':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
       '@sns-parse/platform-zuiyou':
-        specifier: ^0.2.0-alpha.1+upstream.1.6.7
+        specifier: ^0.2.0-alpha.1
         version: 0.2.0-alpha.1
     devDependencies:
       '@types/node':
