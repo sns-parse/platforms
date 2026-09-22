@@ -1,0 +1,63 @@
+{
+  "name": "@sns-parse/platforms",
+  "version": "0.1.0",
+  "description": "sns-parse 全平台定义聚合（27 平台）",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf lib",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@sns-parse/core": "^0.1.0",
+    "@sns-parse/platform-acfun": "^0.1.0",
+    "@sns-parse/platform-bilibili": "^0.1.0",
+    "@sns-parse/platform-doubao": "^0.1.0",
+    "@sns-parse/platform-doubao_image": "^0.1.0",
+    "@sns-parse/platform-douyin": "^0.1.0",
+    "@sns-parse/platform-haokan": "^0.1.0",
+    "@sns-parse/platform-huya": "^0.1.0",
+    "@sns-parse/platform-instagram": "^0.1.0",
+    "@sns-parse/platform-jimeng": "^0.1.0",
+    "@sns-parse/platform-kuaishou": "^0.1.0",
+    "@sns-parse/platform-lishi": "^0.1.0",
+    "@sns-parse/platform-meipai": "^0.1.0",
+    "@sns-parse/platform-oasis": "^0.1.0",
+    "@sns-parse/platform-pipigx": "^0.1.0",
+    "@sns-parse/platform-pipixia": "^0.1.0",
+    "@sns-parse/platform-quanmin": "^0.1.0",
+    "@sns-parse/platform-tiktok": "^0.1.0",
+    "@sns-parse/platform-toutiao": "^0.1.0",
+    "@sns-parse/platform-twitter": "^0.1.0",
+    "@sns-parse/platform-wechat_channel": "^0.1.0",
+    "@sns-parse/platform-weibo": "^0.1.0",
+    "@sns-parse/platform-weishi": "^0.1.0",
+    "@sns-parse/platform-xiaohongshu": "^0.1.0",
+    "@sns-parse/platform-xigua": "^0.1.0",
+    "@sns-parse/platform-youtube": "^0.1.0",
+    "@sns-parse/platform-zhihu": "^0.1.0",
+    "@sns-parse/platform-zuiyou": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sns-parse/platforms.git",
+    "directory": "packages/platforms"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

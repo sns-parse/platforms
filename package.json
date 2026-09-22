@@ -1,0 +1,19 @@
+{
+  "name": "sns-parse-platforms-repo",
+  "private": true,
+  "version": "0.0.0",
+  "description": "sns-parse 平台定义 monorepo：@sns-parse/platform-*（27）与 @sns-parse/platforms 聚合",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  }
+}
