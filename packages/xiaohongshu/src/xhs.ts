@@ -119,10 +119,12 @@ function mapNoteState(n: any): ParsedData | null {
   p.uid = String(user.userId || user.user_id || '')
   p.avatar = normalizeImgUrl(user.avatar || user.images)
   const inter = n.interactInfo || {}
-  p.like = toCount(inter.liked)
-  p.comment = toCount(inter.commentCount)
-  p.collect = toCount(inter.collected)
-  p.share = toCount(inter.shared)
+  // 注意：liked/collected/followed 等布尔键表示当前用户互动态，计数键为 *Count
+  const countOf = (v: unknown): number => (typeof v === 'boolean' ? 0 : toCount(v))
+  p.like = countOf(inter.likedCount ?? inter.liked)
+  p.comment = countOf(inter.commentCount ?? inter.comment)
+  p.collect = countOf(inter.collectedCount ?? inter.collected)
+  p.share = countOf(inter.shareCount ?? inter.shared)
   if (n.time) p.publishTime = Number(n.time) || 0
   if (n.ipLocation) p.author_signature = String(n.ipLocation)
   if (p.title && p.desc && p.desc.startsWith(p.title)) p.title = ''
