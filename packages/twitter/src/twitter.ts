@@ -340,15 +340,97 @@ function deepFindLongestText(node: any): string | undefined {
   return best
 }
 
-/** 清理描述中的 t.co 短链（Twitter 自动附加的截断 URL，无实际内容价值）。
+/** 清理描述中的 t.co 短链（Twitter 自动附加的截断 URL）。
+ *  外链卡片：若 urlMap 提供了展开地址（非 X 站点），以真实链接原位替换保留；
+ *  X 内部互链（pic.twitter.com 媒体/status 互引）仍剥离——媒体已单独提取。
  *  注意保留段落换行：仅折叠水平空白，≥3 连续换行压成空行一档。 */
-function cleanDesc(text: string): string {
+function cleanDesc(text: string, urlMap?: Map<string, string>): string {
   if (!text) return text
-  // 去掉全部 t.co URL（文末自动附加 + 文中内嵌）
-  let cleaned = text.replace(/https?:\/\/t\.co\/[A-Za-z0-9]+(?:\?[^\s]*)?/g, '')
+  // t.co URL 按映射展开（外链）或移除（X 内部/未映射）
+  let cleaned = text.replace(/https?:\/\/t\.co\/[A-Za-z0-9]+(?:\?[^\s]*)?/g, (m) => {
+    if (!urlMap) return ''
+    const key = m.replace(/\?[^\s]*$/, '')
+    return urlMap.get(key) || ''
+  })
   // 仅折叠空格/制表（不动换行）；去掉行首尾空格；连续空行压成一个空行
   cleaned = cleaned.replace(/[^\S\n]+/g, ' ').replace(/ *\n */g, '\n').replace(/\n{3,}/g, '\n\n').trim()
   return cleaned || text
+}
+
+/* ============ 外链卡片（t.co 预览）：展开保留 + og 预览图 ============ */
+
+/** X 内部域名（媒体/推文互链）——卡片无独立价值，置空剥离 */
+const X_INTERNAL_LINK = /^(?:https?:\/\/)?(?:www\.)?(?:twitter\.com|x\.com|pic\.twitter\.com|t\.co)(?:\/|$)/i
+
+/** 从 entities.urls 构建 t.co → 展示链接映射：X 内部 → ''（剥离）；外链 → expanded_url 原位保留 */
+export function buildLinkUrlMap(urls: any[]): { map: Map<string, string>; external: string[] } {
+  const map = new Map<string, string>()
+  const external: string[] = []
+  for (const u of Array.isArray(urls) ? urls : []) {
+    if (!u || typeof u.url !== 'string' || typeof u.expanded_url !== 'string') continue
+    const internal = X_INTERNAL_LINK.test(u.expanded_url)
+    map.set(u.url, internal ? '' : u.expanded_url)
+    if (!internal && !external.includes(u.expanded_url)) external.push(u.expanded_url)
+  }
+  return { map, external }
+}
+
+const LINK_CARD_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'
+const LINK_CARD_PROBE_LIMIT = 2
+const LINK_CARD_BYTES_LIMIT = 512 * 1024
+
+function decodeHtmlEntities(s: string): string {
+  return s
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#x2[fF];/g, '/').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&')
+}
+
+/** 抓目标页 og:image / twitter:image（首图即卡片预览） */
+function extractOgImage(html: string): string | null {
+  const re = /<meta[^>]+(?:property|name)\s*=\s*["'](?:og:image(?::secure_url)?|twitter:image(?::src)?)["'][^>]*>/gi
+  for (const tag of html.match(re) || []) {
+    const c = /content\s*=\s*["']([^"']+)["']/i.exec(tag)
+    if (c && c[1]) {
+      const url = decodeHtmlEntities(c[1]).trim()
+      if (/^https?:\/\//i.test(url)) return url
+    }
+  }
+  return null
+}
+
+/** 外链卡片预览图：展开目标页 og:image（有界：≤2 个目标、10s 超时、512KB 截断；失败静默） */
+export async function fetchLinkCardPreview(external: string[], http: AxiosInstance): Promise<string[]> {
+  const out: string[] = []
+  for (const target of external.slice(0, LINK_CARD_PROBE_LIMIT)) {
+    try {
+      const res = await http.get(target, {
+        timeout: 10000,
+        responseType: 'text',
+        maxContentLength: LINK_CARD_BYTES_LIMIT,
+        headers: { 'User-Agent': LINK_CARD_UA, Accept: 'text/html,application/xhtml+xml,*/*;q=0.8' },
+      })
+      if (typeof res.data !== 'string' || !res.data) continue
+      const img = extractOgImage(res.data)
+      if (img && !out.includes(img)) out.push(img)
+      if (out.length >= LINK_CARD_PROBE_LIMIT) break
+    } catch {
+      // 预览可选：目标不可达/超时/非 HTML → 静默跳过
+    }
+  }
+  return out
+}
+
+/** 外链卡片增强：仅推文无原生媒体时注入预览图（避免与原生图/视频重复），并把类型提升为 image */
+async function enhanceLinkPreview(p: ParsedData, urls: any[], http: AxiosInstance): Promise<void> {
+  if (p.images.length || p.video) return
+  const { external } = buildLinkUrlMap(urls)
+  if (!external.length) return
+  const imgs = await fetchLinkCardPreview(external, http)
+  if (imgs.length) {
+    p.images.push(...imgs)
+    p.type = 'image'
+    if (!p.cover) p.cover = p.images[0]
+  }
 }
 
 function baseParsed(): ParsedData {
@@ -439,7 +521,8 @@ function mapSyndication(tw: any): ParsedData {
   p.type = p.video ? 'video' : (p.images.length ? 'image' : 'text')
 
   // 标题/简介同源；标题也须基于清理后的文本，否则 t.co 短链会让去重判断失效
-  const cleaned = cleanDesc(text)
+  // 外链卡片：t.co → expanded_url 原位展开（X 内部互链仍剥离）
+  const cleaned = cleanDesc(text, buildLinkUrlMap(tw.entities?.urls).map)
   p.title = cleaned.slice(0, 100)
   p.desc = cleaned
   p.lang = tw.lang ? String(tw.lang) : undefined
@@ -504,7 +587,8 @@ export function mapGraphql(rawResult: any): ParsedData {
   p.type = p.video ? 'video' : (p.images.length ? 'image' : 'text')
 
   // 标题/简介同源；标题也须基于清理后的文本，否则 t.co 短链会让去重判断失效
-  const cleaned = cleanDesc(text)
+  // 外链卡片：t.co → expanded_url 原位展开（X 内部互链仍剥离）
+  const cleaned = cleanDesc(text, buildLinkUrlMap(legacy.entities?.urls).map)
   p.title = cleaned.slice(0, 100)
   p.desc = cleaned
   p.lang = legacy.lang ? String(legacy.lang) : undefined
@@ -569,9 +653,12 @@ export async function fetchGraphqlRaw(id: string, creds: TwitterCreds, get: Grap
   return unwrapTweetResult(result)
 }
 
-/** 鉴权 GraphQL：仅用 auth_token + ct0，回退取登录受限推文 */
-async function fetchGraphqlTweet(id: string, creds: TwitterCreds, get: GraphqlGetter): Promise<ParsedData> {
-  return mapGraphql(await fetchGraphqlRaw(id, creds, get))
+/** 鉴权 GraphQL：仅用 auth_token + ct0，回退取登录受限推文（含外链卡片增强） */
+async function fetchGraphqlTweet(id: string, creds: TwitterCreds, get: GraphqlGetter, http?: AxiosInstance): Promise<ParsedData> {
+  const raw = await fetchGraphqlRaw(id, creds, get)
+  const p = mapGraphql(raw)
+  if (http) await enhanceLinkPreview(p, raw?.legacy?.entities?.urls || raw?.entities?.urls, http)
+  return p
 }
 
 export async function parseTwitter(url: string, http: AxiosInstance, creds?: TwitterCreds, getGraphql?: GraphqlGetter): Promise<ParsedData> {
@@ -587,12 +674,13 @@ export async function parseTwitter(url: string, http: AxiosInstance, creds?: Twi
   const tw = res.data
   if (tw && tw.__typename === 'Tweet' && tw.user) {
     const p = mapSyndication(tw)
+    await enhanceLinkPreview(p, tw.entities?.urls, http)
     // 长推：syndication 现仅返回 note_tweet 的 id 引用（无 text），tw.text 被
     // display_text_range 截断。有登录态时改走 GraphQL 取全文；失败回退截断结果。
     const noteTruncated = tw.note_tweet && !tw.note_tweet.text
     if (noteTruncated && creds && creds.authToken && creds.ct0) {
       try {
-        return await fetchGraphqlTweet(id, creds, getGraphql || tlsGet)
+        return await fetchGraphqlTweet(id, creds, getGraphql || tlsGet, http)
       } catch {
         return p
       }
@@ -602,7 +690,7 @@ export async function parseTwitter(url: string, http: AxiosInstance, creds?: Twi
 
   // 2) tombstone（需登录）：回退到鉴权 GraphQL（TLS 指纹模拟）
   if (creds && creds.authToken && creds.ct0) {
-    return fetchGraphqlTweet(id, creds, getGraphql || tlsGet)
+    return fetchGraphqlTweet(id, creds, getGraphql || tlsGet, http)
   }
   const reasonRaw = pick(tw?.tombstone?.text, tw?.tombstone?.name)
   throw new Error(`推文不可访问（可能需要登录、已被删除或为非公开内容）${reasonRaw ? '：' + reasonRaw : ''}`)

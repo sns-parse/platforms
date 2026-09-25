@@ -1,6 +1,6 @@
 {
   "name": "@sns-parse/platform-twitter",
-  "version": "0.3.0-alpha.1+upstream.1.6.7",
+  "version": "0.3.0-alpha.2+upstream.1.6.7",
   "description": "sns-parse 平台定义：Twitter/X",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
