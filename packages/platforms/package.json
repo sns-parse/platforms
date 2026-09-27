@@ -1,6 +1,6 @@
 {
   "name": "@sns-parse/platforms",
-  "version": "0.3.0-alpha.2+upstream.1.6.7",
+  "version": "0.3.0-alpha.3+upstream.1.6.7",
   "description": "sns-parse 全部平台定义的纯依赖聚合包（自动安装 27 个 platform-*；不提供实现）",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -35,7 +35,7 @@
     "@sns-parse/platform-toutiao": "^0.3.0-alpha.1",
     "@sns-parse/platform-twitter": "^0.3.0-alpha.1",
     "@sns-parse/platform-wechat_channel": "^0.3.0-alpha.1",
-    "@sns-parse/platform-weibo": "^0.3.0-alpha.1",
+    "@sns-parse/platform-weibo": "^0.3.0-alpha.2",
     "@sns-parse/platform-weishi": "^0.3.0-alpha.1",
     "@sns-parse/platform-xiaohongshu": "^0.3.0-alpha.1",
     "@sns-parse/platform-xigua": "^0.3.0-alpha.1",
