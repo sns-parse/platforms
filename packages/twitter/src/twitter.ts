@@ -346,15 +346,19 @@ function deepFindLongestText(node: any): string | undefined {
  *  注意保留段落换行：仅折叠水平空白，≥3 连续换行压成空行一档。 */
 function cleanDesc(text: string, urlMap?: Map<string, string>): string {
   if (!text) return text
-  // t.co URL 按映射展开（外链）或移除（X 内部/未映射）
+  // t.co URL 按映射展开或直接移除（外链保留；X 内部/未映射）
+  let stripped = false
   let cleaned = text.replace(/https?:\/\/t\.co\/[A-Za-z0-9]+(?:\?[^\s]*)?/g, (m) => {
+    stripped = true
     if (!urlMap) return ''
     const key = m.replace(/\?[^\s]*$/, '')
     return urlMap.get(key) || ''
   })
-  // 仅折叠空格/制表（不动换行）；去掉行首尾空格；连续空行压成一个空行
+  // 折叠空白/制表为单空格、清理首尾空格与连续换行，再压缩空行为最多两个
   cleaned = cleaned.replace(/[^\S\n]+/g, ' ').replace(/ *\n */g, '\n').replace(/\n{3,}/g, '\n\n').trim()
-  return cleaned || text
+  // 全部内容都是 t.co（如正文仅剩 pic.twitter.com 自挂链且 entities.urls 缺失）时返回空，
+  // 不得复活原文——否则 desc/title 会残留 t.co 垃圾链接
+  return cleaned || (stripped ? '' : text)
 }
 
 /* ============ 外链卡片（t.co 预览）：展开保留 + og 预览图 ============ */
@@ -665,12 +669,21 @@ export async function parseTwitter(url: string, http: AxiosInstance, creds?: Twi
   const id = extractTweetId(url)
   if (!id) throw new Error('无法从 X 链接提取推文 ID')
 
-  // 1) 公开 syndication 路径
-  const res = await http.get(SYNDICATION_URL, {
+  // 1) 公开 syndication 路径（突发限流 403/429：退避 1.2s 重试一次，仍失败给明确错误）
+  const attempt = () => http.get(SYNDICATION_URL, {
     params: { id, token: 'a' },
     timeout: 30000,
     headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+    validateStatus: () => true,
   })
+  let res = await attempt()
+  if (res.status === 403 || res.status === 429) {
+    await new Promise(resolve => setTimeout(resolve, 1200))
+    res = await attempt()
+  }
+  if (res.status === 403 || res.status === 429) {
+    throw new Error(`X 公开接口被限流（HTTP ${res.status}）：请稍后重试`)
+  }
   const tw = res.data
   if (tw && tw.__typename === 'Tweet' && tw.user) {
     const p = mapSyndication(tw)
