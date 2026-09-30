@@ -1,6 +1,6 @@
 {
   "name": "@sns-parse/platforms",
-  "version": "0.3.0-alpha.3+upstream.1.6.7",
+  "version": "0.3.0-alpha.4+upstream.1.6.7",
   "description": "sns-parse 全部平台定义的纯依赖聚合包（自动安装 27 个 platform-*；不提供实现）",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@sns-parse/core": "^0.6.0-alpha.1",
     "@sns-parse/platform-acfun": "^0.3.0-alpha.1",
-    "@sns-parse/platform-bilibili": "^0.3.0-alpha.1",
+    "@sns-parse/platform-bilibili": "^0.3.0-alpha.2",
     "@sns-parse/platform-doubao": "^0.3.0-alpha.1",
     "@sns-parse/platform-doubao_image": "^0.3.0-alpha.1",
     "@sns-parse/platform-douyin": "^0.3.0-alpha.1",

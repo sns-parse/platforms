@@ -140,6 +140,9 @@ importers:
       '@sns-parse/core':
         specifier: ^0.6.0-alpha.1
         version: 0.6.0-alpha.1(debug@4.4.3)
+      axios:
+        specifier: ^1.16.1
+        version: 1.20.0(debug@4.4.3)
     devDependencies:
       '@types/node':
         specifier: ^20.11.0
@@ -368,7 +371,7 @@ importers:
         specifier: ^0.3.0-alpha.1
         version: 0.3.0-alpha.1(debug@4.4.3)
       '@sns-parse/platform-bilibili':
-        specifier: ^0.3.0-alpha.1
+        specifier: ^0.3.0-alpha.2
         version: 0.3.0-alpha.1(debug@4.4.3)
       '@sns-parse/platform-doubao':
         specifier: ^0.3.0-alpha.1
@@ -426,7 +429,7 @@ importers:
         version: 0.3.0-alpha.1(debug@4.4.3)
       '@sns-parse/platform-weibo':
         specifier: ^0.3.0-alpha.2
-        version: link:../weibo
+        version: 0.3.0-alpha.2(debug@4.4.3)
       '@sns-parse/platform-weishi':
         specifier: ^0.3.0-alpha.1
         version: 0.3.0-alpha.1(debug@4.4.3)
@@ -787,6 +790,10 @@ packages:
 
   '@sns-parse/platform-wechat_channel@0.3.0-alpha.1':
     resolution: {integrity: sha512-lhzS8a5BjVzxLK/0Zf5GlU+4dCj1wr00g2JQyXZzzD9YeFQmHKlH6bLFK1Zg80zZ1J+qq26XiZe54AruCb+2gw==}
+    engines: {node: '>=16.0.0'}
+
+  '@sns-parse/platform-weibo@0.3.0-alpha.2':
+    resolution: {integrity: sha512-7BpINel3/NxjIc3WhFtMqttNxVpBBxd5l3tzfB38+O5og7ddB/8x/OvSh2p4t+YOP0AUIoXjxkUdEM4l0esRzQ==}
     engines: {node: '>=16.0.0'}
 
   '@sns-parse/platform-weishi@0.3.0-alpha.1':
@@ -1314,6 +1321,14 @@ snapshots:
   '@sns-parse/platform-wechat_channel@0.3.0-alpha.1(debug@4.4.3)':
     dependencies:
       '@sns-parse/core': 0.6.0-alpha.1(debug@4.4.3)
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sns-parse/platform-weibo@0.3.0-alpha.2(debug@4.4.3)':
+    dependencies:
+      '@sns-parse/core': 0.6.0-alpha.1(debug@4.4.3)
+      axios: 1.20.0(debug@4.4.3)
     transitivePeerDependencies:
       - debug
       - supports-color
